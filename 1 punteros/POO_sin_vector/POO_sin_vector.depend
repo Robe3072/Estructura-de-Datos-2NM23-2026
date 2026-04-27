@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1746299367 source:c:\users\gerardo\onedrive\documentos\escuela\estruc.datos\1.2 punteros\poo_sin_vector\persona.cpp
+	"Persona.h"
+	<iostream>
+
+1746299367 c:\users\gerardo\onedrive\documentos\escuela\estruc.datos\1.2 punteros\poo_sin_vector\persona.h
+	<string>
+

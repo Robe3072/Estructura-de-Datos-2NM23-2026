@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1746305429 source:c:\users\gerardo\onedrive\documentos\escuela\estruc.datos\6.2 pila\poo_con_vector\main.cpp
+	"Pila.h"
+	<iostream>
+
+1746305429 c:\users\gerardo\onedrive\documentos\escuela\estruc.datos\6.2 pila\poo_con_vector\pila.h
+	<vector>
+
+1746305429 source:c:\users\gerardo\onedrive\documentos\escuela\estruc.datos\6.2 pila\poo_con_vector\pila.cpp
+	"Pila.h"
+	<iostream>
+
