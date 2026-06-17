@@ -1,0 +1,136 @@
+import xml.etree.ElementTree as ET
+
+# Clase Cliente
+class Cliente:
+    def __init__(self, nombre, edad, prioridad):
+        self.nombre = nombre
+        self.edad = int(edad)
+        self.prioridad = prioridad
+
+    def __str__(self):
+        return f"{self.nombre}, {self.edad} años, PRIORIDAD: {self.prioridad}"
+
+# Clase ArregloClientes
+class ArregloClientes:
+    def __init__(self):
+        self.lista = []
+
+    def agregar_cliente(self, cliente):
+        self.lista.append(cliente)
+
+    def obtener_todos(self):
+        return self.lista
+
+# Clase Cola (ADT)
+class Cola:
+    def __init__(self):
+        self.elementos = []
+
+    def encolar(self, cliente):
+        self.elementos.append(cliente)
+
+    def desencolar(self):
+        if not self.esta_vacia():
+            return self.elementos.pop(0)
+
+    def esta_vacia(self):
+        return len(self.elementos) == 0
+
+    def mostrar(self):
+        for c in self.elementos:
+            print(c)
+
+    def obtener_todos(self):
+        return self.elementos
+
+# Guardar clientes en XML
+def guardar_clientes_en_xml(clientes, ruta_salida):
+    raiz = ET.Element('Clientes')
+    for cliente in clientes:
+        elem_cliente = ET.SubElement(raiz, 'Cliente')
+        ET.SubElement(elem_cliente, 'Nombre').text = cliente.nombre
+        ET.SubElement(elem_cliente, 'Edad').text = str(cliente.edad)
+        ET.SubElement(elem_cliente, 'Prioridad').text = cliente.prioridad
+
+    arbol = ET.ElementTree(raiz)
+    arbol.write(ruta_salida, encoding='utf-8', xml_declaration=True)
+    print(f"Clientes guardados en {ruta_salida}")
+
+# Cargar clientes desde XML
+def cargar_clientes_de_xml(ruta_entrada):
+    arreglo = ArregloClientes()
+    try:
+        arbol = ET.parse(ruta_entrada)
+        raiz = arbol.getroot()
+
+        for elem_cliente in raiz.findall('Cliente'):
+            nombre = elem_cliente.find('Nombre').text
+            edad = elem_cliente.find('Edad').text
+            prioridad = elem_cliente.find('Prioridad').text
+            cliente = Cliente(nombre, edad, prioridad)
+            arreglo.agregar_cliente(cliente)
+
+        print(f"Clientes cargados desde {ruta_entrada}")
+    except FileNotFoundError:
+        print("Archivo no encontrado.")
+    return arreglo
+
+# Procesar clientes con prioridad alta a una cola
+def procesar_prioridad_alta(arreglo_clientes):
+    cola = Cola()
+    for cliente in arreglo_clientes.obtener_todos():
+        if cliente.prioridad.upper() == "ALTA":
+            cola.encolar(cliente)
+    return cola
+
+# Menú interactivo
+def menu():
+    arreglo = ArregloClientes()
+
+    while True:
+        print("\n--- MENÚ DE CLIENTES ---")
+        print("1. Agregar cliente")
+        print("2. Mostrar todos los clientes")
+        print("3. Procesar prioridad alta y mostrar")
+        print("4. Guardar clientes")
+        print("5. Cargar clientes")
+        print("6. Salir")
+
+        opcion = input("Selecciona una opción: ")
+
+        if opcion == '1':
+            nombre = input("Nombre: ")
+            edad = input("Edad: ")
+            prioridad = input("Prioridad (ALTA/MEDIA/BAJA): ")
+            cliente = Cliente(nombre, edad, prioridad)
+            arreglo.agregar_cliente(cliente)
+            print("Cliente agregado.")
+
+        elif opcion == '2':
+            print("\n--- CLIENTES REGISTRADOS ---")
+            for c in arreglo.obtener_todos():
+                print(c)
+
+        elif opcion == '3':
+            cola = procesar_prioridad_alta(arreglo)
+            print("\n--- CLIENTES CON PRIORIDAD ALTA ---")
+            cola.mostrar()
+            guardar_clientes_en_xml(cola.obtener_todos(), "prioridad_alta.xml")
+
+        elif opcion == '4':
+            ruta = input("Nombre de archivo para guardar (ej: clientes.xml): ")
+            guardar_clientes_en_xml(arreglo.obtener_todos(), ruta)
+
+        elif opcion == '5':
+            ruta = input("Nombre de archivo para cargar (ej: clientes.xml): ")
+            arreglo = cargar_clientes_de_xml(ruta)
+
+        elif opcion == '6':
+            print("Saliendo del programa...")
+            break
+
+        else:
+            print("Opción no válida. Intenta de nuevo.")
+
+# Ejecutar menú
+menu()

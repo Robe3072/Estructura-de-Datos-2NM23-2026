@@ -1,0 +1,6 @@
+Karen,34,Alta
+Luis,28,Media
+Carlos,45,Baja
+Maria,25,Alta
+Jorge,31,Media
+Elena,40,Alta

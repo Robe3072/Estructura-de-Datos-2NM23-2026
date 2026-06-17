@@ -1,0 +1,3 @@
+Karen,34,Alta
+Maria,25,Alta
+Elena,40,Alta
